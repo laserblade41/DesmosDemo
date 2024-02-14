@@ -25,7 +25,7 @@ class Equation:
     def parse_rec(tokens: list[Expression]) -> Expression:
         if len(tokens) == 1:
             return tokens[0]
-        if isinstance(tokens[0], OpenBrackets) and isinstance(tokens[-1], CloseBrackets):
+        if tokens[0] == tokens[-1]:
             return Brackets(Equation.parse_rec(tokens[1:-1]))
         min_index = find_min_priority(tokens)
         min_token = tokens[min_index]
