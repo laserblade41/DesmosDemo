@@ -10,7 +10,7 @@ Then, using said tree we can compute many values for the function and graph it.
 
 to graph a simple function use:
 ```python
-from expression_compiler.compiler import *
+from expression_compiler.compiler import Equation
 from matplotlib import pyplot as plt
 
 upper = 100
