@@ -4,7 +4,7 @@ Then, using said tree we can compute many values for the function and graph it.
 
 ## WIP:
 - Adding my own graphing tool (right now the example uses [**matplotlib**](https://github.com/matplotlib/matplotlib)).
-- Simplifing adding a custom function.
+- Simplifing adding custom functions.
 
 ## Example
 
