@@ -1,4 +1,4 @@
-from expression_compiler.compiler import *
+from expression_compiler.compiler import Equation
 from matplotlib import pyplot as plt
 
 upper = 100
