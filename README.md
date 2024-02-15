@@ -1,3 +1,4 @@
+## Description
 This project is based on [**AST**](https://en.wikipedia.org/wiki/Abstract_syntax_tree)(Abstract Syntax Tree) which is mainly used for compilers.
 The main idea is taking a string representing a function, tokenizing it, using the tokens to create an operator tree that makes up the function.
 Then, using said tree we can compute
