@@ -29,7 +29,7 @@ plt.show()
 for an easier time when graphing equations, it's also possible to pass a variable dictionary to `Equation.calculate()` as seen in the code above.
 
 
-*You can map variables into an operator-tree and use it to create another variable as the variable does not compute the value of the tree.
+*You can use operator to define other operators like this: `x=2^3+5` and `y=7x`.
 ```python
 Equation('y=x^3+5x+sin(x)')
 Equation('z=5y')
