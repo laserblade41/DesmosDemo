@@ -1,4 +1,4 @@
-from typing import Tuple, Any, Dict
+from typing import Tuple, Any, Dict, List
 
 from expression_compiler.operators import *
 import math
@@ -21,8 +21,9 @@ class Equation:
             Expression.variables[key] = Number(value)
         return self.tree.calculate()
 
+    # There are two ways to compile the equation, this recursive one was my first attempt
     @staticmethod
-    def parse_rec(tokens: list[Expression]) -> Expression:
+    def parse_rec(tokens: List[Expression]) -> Expression:
         if len(tokens) == 1:
             return tokens[0]
         if tokens[0] == tokens[-1]:
@@ -46,6 +47,29 @@ class Equation:
             case _:
                 raise Exception('invalid token')
         return min_token
+
+    # we can also use the shunting yard algorithm to compile the equation
+    def shunting_yard(self, tokens: List[Expression]) -> List[Expression]:
+        output = []
+        operators = []
+        for token in tokens:
+            if isinstance(token, Number) or isinstance(token, Variable):
+                output.append(token)
+            elif isinstance(token, UnaryOperator) or isinstance(token, OpenBrackets):
+                if token.priority == operators[-1].priority:
+                    output.append(operators.pop())
+                operators.append(token)
+            elif isinstance(token, BinaryOperator):
+                while operators and operators[-1].priority >= token.priority:
+                    output.append(operators.pop())
+                operators.append(token)
+            elif isinstance(token, CloseBrackets):
+                while not isinstance(operators[-1], OpenBrackets):
+                    output.append(operators.pop())
+                operators.pop()
+        while operators:
+            output.append(operators.pop())
+        return output
 
     @staticmethod
     def check_balance(equation: str) -> bool:

@@ -1,11 +1,14 @@
-from expression_compiler.compiler import Equation
+from expression_compiler.compiler import Equation, shunting_yard
 from matplotlib import pyplot as plt
 
-upper = 100
-lower = -100
+upper = 30
+lower = -30
 
-
-y = Equation(input('Enter the equation: '))
-plt.plot([i for i in range(lower, upper)],
-         [y.calculate({'x': i}) for i in range(lower, upper)])
-plt.show()
+if __name__ == '__main__':
+    """
+    y = Equation(input('Enter the equation: '))
+    plt.plot([i for i in range(lower, upper)],
+             [y.calculate({'x': i}) for i in range(lower, upper)])
+    plt.show()
+    """
+    print
