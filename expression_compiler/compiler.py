@@ -67,6 +67,9 @@ class Equation:
                 while not isinstance(operators[-1], OpenBrackets):
                     output.append(operators.pop())
                 operators.pop()
+            # we can have either open brackets or assign operator
+            else:
+                operators.append(token)
         while operators:
             output.append(operators.pop())
         return output
