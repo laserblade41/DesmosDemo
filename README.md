@@ -4,8 +4,6 @@ The `Equation` constructor takes in a string, tokenizes and recursivly parses it
 
 Alternatively, you can use the shunting yard algorithm to create an `Expression` tree using `Equation(Equation.shunting_yard_tree(equation)))`.
 
-the operator.
-
 After the `Expression` tree has been created, you can use `Equation.calculate()` to recursivly calculate the Expressions.
 
 ## WIP:
