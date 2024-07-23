@@ -1,6 +1,9 @@
+## Description
 This project is based on [**AST**](https://en.wikipedia.org/wiki/Abstract_syntax_tree)(Abstract Syntax Tree) which is mainly used for compilers.
-The main idea is taking a string representing a function, tokenizing it, using the tokens to create a operator tree that makes up the function.
-Then, using said tree we can compute many values for the function and graph it.
+The `Equation` constructor takes in a string, tokenizes and recursivly parses it into a `Expression` tree by finding the minimum priority operator, parsing each half of the equation and appending it to 
+the operator.
+
+After the `Expression` tree has been created, you can use `Equation.calculate()` to recursivly calculate the Expressions.
 
 ## WIP:
 - Adding my own graphing tool (right now the example uses [**matplotlib**](https://github.com/matplotlib/matplotlib)).
@@ -22,12 +25,11 @@ plt.plot([i for i in range(lower, upper)],
          [y.calculate({'x': i}) for i in range(lower, upper)])
 plt.show()
 ```
-To create an Equation-tree simply use `e = Equation(string)` and to compute a speciefic value use `e.calculate()`.
 
 for an easier time when graphing equations, it's also possible to pass a variable dictionary to `Equation.calculate()` as seen in the code above.
 
 
-*You can map variables into an operator-tree and use it to create another variable as the variable does not compute the value of the tree.
+*You can use operators to define other operators like this:
 ```python
 Equation('y=x^3+5x+sin(x)')
 Equation('z=5y')
