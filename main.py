@@ -5,7 +5,8 @@ upper = 30
 lower = -30
 
 if __name__ == '__main__':
-    y = Equation(input('Enter the equation: '))
+    y = Equation(Equation.shunting_yard_tree(input('Enter the equation: ')))
+    # y = Equation(input('Enter the equation: '))
     plt.plot([i for i in range(lower, upper)],
              [y.calculate({'x': i}) for i in range(lower, upper)])
     plt.show()

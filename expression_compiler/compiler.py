@@ -13,8 +13,13 @@ class Equation:
                        'ln': (lambda x: math.log(x, math.e), 4), 'log': (lambda x: math.log(x, 10), 4)}
     brackets = {'(': ')', '[': ']', '{': '}'}
 
-    def __init__(self, equ: str):
-        self.tree = self.parse_rec(self.tokenize(equ))
+    def __init__(self, equation: str | Expression):
+        if isinstance(equation, str):
+            self.tree = self.parse_rec(self.tokenize(equation))
+        elif isinstance(equation, Expression):
+            self.tree = equation
+        else:
+            raise Exception('invalid equation')
 
     def calculate(self, variables: Dict[str, int] = {}) -> int:
         for key, value in variables.items():
@@ -48,31 +53,68 @@ class Equation:
                 raise Exception('invalid token')
         return min_token
 
+    @staticmethod
+    def shunting_yard_tree(equation: str) -> Expression:
+        return Equation.parse_shunting_yard(Equation.shunting_yard(Equation.tokenize(equation)))
+
     # we can also use the shunting yard algorithm to compile the equation
-    def shunting_yard(self, tokens: List[Expression]) -> List[Expression]:
+    @staticmethod
+    def shunting_yard(tokens: List[Expression]) -> List[Expression]:
         output = []
         operators = []
+        assignQueue = []
         for token in tokens:
             if isinstance(token, Number) or isinstance(token, Variable):
                 output.append(token)
-            elif isinstance(token, UnaryOperator) or isinstance(token, OpenBrackets):
-                if token.priority == operators[-1].priority:
+            elif isinstance(token, UnaryOperator):
+                if operators and token.priority == operators[-1].priority:
                     output.append(operators.pop())
                 operators.append(token)
             elif isinstance(token, BinaryOperator):
-                while operators and operators[-1].priority >= token.priority:
-                    output.append(operators.pop())
+                while operators and operators[-1].priority < token.priority:
+                    operators.append(operators.pop())
+                operators.append(token)
+            elif isinstance(token, OpenBrackets):
                 operators.append(token)
             elif isinstance(token, CloseBrackets):
-                while not isinstance(operators[-1], OpenBrackets):
-                    output.append(operators.pop())
-                operators.pop()
+                while not isinstance(operators[0], OpenBrackets):
+                    operators.append(operators.pop(0))
+                operators.pop(0)
+            elif isinstance(token, Assign):
+                assignQueue.append(output.pop())
+                assignQueue.append(token)
             # we can have either open brackets or assign operator
             else:
                 operators.append(token)
         while operators:
-            output.append(operators.pop())
+            output.append(operators.pop(0))
+        while assignQueue:
+            output.append(assignQueue.pop(0))
         return output
+
+    @staticmethod
+    def parse_shunting_yard(tokens: List[Expression]) -> Expression:
+        parse_queue = []
+        while tokens:
+            token = tokens.pop(0)
+            if isinstance(token, Number) or isinstance(token, Variable):
+                parse_queue.append(token)
+            elif isinstance(token, UnaryOperator):
+                token.next = parse_queue.pop(0)
+                parse_queue.append(token)
+            elif isinstance(token, BinaryOperator):
+                token.left = parse_queue.pop(0)
+                token.right = parse_queue.pop(0)
+                parse_queue.append(token)
+            elif isinstance(token, Assign):
+                value = parse_queue.pop(0)
+                variable = parse_queue.pop(0)
+                Expression.variables[variable.name] = value
+                return value
+            else:
+                raise Exception('invalid token')
+        return parse_queue.pop()
+
 
     @staticmethod
     def check_balance(equation: str) -> bool:
