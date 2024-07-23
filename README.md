@@ -1,6 +1,9 @@
 ## Description
 This project is based on [**AST**](https://en.wikipedia.org/wiki/Abstract_syntax_tree)(Abstract Syntax Tree) which is mainly used for compilers.
-The `Equation` constructor takes in a string, tokenizes and recursivly parses it into a `Expression` tree by finding the minimum priority operator, parsing each half of the equation and appending it to 
+The `Equation` constructor takes in a string, tokenizes and recursivly parses it into a `Expression` tree by finding the minimum priority operator, parsing each half of the equation and appending it to.
+
+Alternatively, you can use the shunting yard algorithm to create an `Expression` tree using `Equation(Equation.shunting_yard_tree(equation)))`.
+
 the operator.
 
 After the `Expression` tree has been created, you can use `Equation.calculate()` to recursivly calculate the Expressions.
